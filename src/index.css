@@ -99,3 +99,26 @@ p {
 .risk-critical {
   @apply bg-risk-critical/10 text-risk-critical;
 }
+
+/* Leaflet map styling */
+.leaflet-container {
+  background: #0f172a;
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-control-zoom a {
+  color: #e2e8f0 !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(148, 163, 184, 0.5) !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #0f172a;
+}
