@@ -11,6 +11,7 @@ import Reports from '@pages/Reports'
 import SettingsPage from '@pages/Settings'
 import About from '@pages/About'
 import ContactPage from '@pages/Contact'
+import Auth from '@pages/Auth'
 
 /**
  * Main App Component with Router
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactPage />} />
         </Route>
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </Router>
   )

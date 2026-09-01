@@ -59,21 +59,21 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
       </button>
 
       {/* Logo/Header */}
-      <div className="px-6 py-6 border-b border-surface-border">
+      <div className="px-5 py-5 border-b border-surface-border bg-[#071421]">
         <div className="flex items-center gap-2">
           <CloudRain className="w-5 h-5 text-status-info" />
-          <div className="text-lg font-bold text-status-info">
+          <div className="text-base font-bold tracking-wide text-white">
             VARSHANETRA
           </div>
         </div>
-        <div className="flex items-center justify-center gap-1 mt-3">
-          <span className="text-xs text-text-muted font-semibold">Observe</span>
+        <div className="flex items-center gap-1 mt-3">
+          <span className="text-[10px] text-slate-300 font-semibold">Observe</span>
           <Dot className="w-1.5 h-1.5 text-status-info" />
-          <span className="text-xs text-text-muted font-semibold">Predict</span>
+          <span className="text-[10px] text-slate-300 font-semibold">Predict</span>
           <Dot className="w-1.5 h-1.5 text-status-info" />
-          <span className="text-xs text-text-muted font-semibold">Warn</span>
+          <span className="text-[10px] text-slate-300 font-semibold">Warn</span>
           <Dot className="w-1.5 h-1.5 text-status-info" />
-          <span className="text-xs text-text-muted font-semibold">Protect</span>
+          <span className="text-[10px] text-slate-300 font-semibold">Protect</span>
         </div>
       </div>
 
@@ -88,8 +88,8 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               onClick={() => handleNavigation(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-md transition-all ${
                 active
-                  ? 'bg-status-info text-surface-base font-medium shadow-md'
-                  : 'text-text-secondary hover:bg-surface-secondary hover:text-text-primary'
+                  ? 'bg-[#153b66] text-white font-semibold shadow-md'
+                  : 'text-slate-200 hover:bg-[#10243c] hover:text-white'
               }`}
             >
               <Icon className="w-5 h-5 flex-shrink-0" />
@@ -101,7 +101,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
       {/* Login Section */}
       <div className="px-4 py-4 border-t border-surface-border space-y-3">
-        <button className="w-full px-4 py-2 bg-status-info text-surface-base text-sm font-medium rounded-md hover:bg-cyan-500 transition-colors">
+        <button onClick={() => handleNavigation('/auth')} className="w-full px-4 py-2 border border-status-info/70 text-status-info text-sm font-semibold rounded-md hover:bg-status-info hover:text-surface-base transition-colors">
           Login / Sign up
         </button>
       </div>

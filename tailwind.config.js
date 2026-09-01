@@ -27,7 +27,14 @@ export default {
           base: '#0f1419',      // deepest background
           secondary: '#1a1f2e', // secondary surfaces
           elevated: '#252d3d',  // cards/panels
+          tertiary: '#202a3a',  // form fields and secondary cards
           border: '#2d3142',    // borders
+        },
+
+        // Shared action color used by forms and page controls
+        primary: {
+          DEFAULT: '#2563eb',
+          dark: '#1d4ed8',
         },
         
         // Text colors
