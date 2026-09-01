@@ -36,19 +36,25 @@ export default function Dashboard() {
     { id: 'mizoram', name: 'Mizoram', flag: '🟡' },
   ]
 
-  // Initialize data
+  // Fetch real weather data
   useEffect(() => {
-    setMetrics(generateStateMetrics(selectedState))
-    setRegions(getRegionStatuses())
-    setLoading(false)
+    const fetchData = async () => {
+      setLoading(true)
+      const data = await generateStateMetrics(selectedState)
+      setMetrics(data)
+      setRegions(getRegionStatuses())
+      setLoading(false)
+    }
+    fetchData()
   }, [selectedState])
 
-  // Simulate live data updates every 5 seconds
+  // Update with real data every 30 seconds (respect API rate limit)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics(generateStateMetrics(selectedState))
+    const interval = setInterval(async () => {
+      const data = await generateStateMetrics(selectedState)
+      setMetrics(data)
       setLastUpdate(new Date())
-    }, 5000)
+    }, 30000)
 
     return () => clearInterval(interval)
   }, [selectedState])
