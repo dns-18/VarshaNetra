@@ -71,7 +71,17 @@ export default function TopBar() {
           <CloudRain className="w-3.5 h-3.5 text-status-info" />
           <span className="text-[10px] font-medium uppercase tracking-wide text-status-info">Monsoon watch</span>
         </div>
+
+        <div className="flex items-center gap-2 rounded-full border border-status-info/30 bg-status-info/10 px-3 py-1.5">
+           <span className="w-1.5 h-1.5 rounded-full bg-status-info animate-pulse" />
+           <span className="text-[10px] font-semibold uppercase tracking-wide text-status-info">
+                Frontend Preview
+            </span>
+        </div>
       </div>
+    </header>
+  )
+}
 
       {/* Right: Time + Live */}
       <div className="flex items-center gap-3 md:gap-4 shrink-0">
