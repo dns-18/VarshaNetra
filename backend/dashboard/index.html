@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VarshaNetra — Early Warning Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --green: #1e8e3e; --yellow: #f2b200; --orange: #e8710a; --red: #d93025;
+    --bg: #0f1720; --panel: #17222e; --text: #e6edf3; --muted: #93a4b3;
+    --border: #26343f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text);
+  }
+  header {
+    padding: 20px 28px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  header h1 { margin: 0; font-size: 20px; }
+  header p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+  .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .controls input, .controls select, .controls button {
+    background: var(--panel); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 10px; font-size: 13px;
+  }
+  .controls button { cursor: pointer; }
+  .controls button:hover { border-color: #3a4b5a; }
+  #status { font-size: 12px; color: var(--muted); }
+  main { padding: 20px 28px; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; border-left: 5px solid var(--muted);
+  }
+  .card.GREEN  { border-left-color: var(--green); }
+  .card.YELLOW { border-left-color: var(--yellow); }
+  .card.ORANGE { border-left-color: var(--orange); }
+  .card.RED    { border-left-color: var(--red); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .card-top h3 { margin: 0; font-size: 15px; }
+  .card-top .time { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .badge {
+    font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 9px;
+    border-radius: 999px; color: #10161c; white-space: nowrap;
+  }
+  .badge.GREEN  { background: var(--green); color: #eafff0; }
+  .badge.YELLOW { background: var(--yellow); }
+  .badge.ORANGE { background: var(--orange); color: #fff; }
+  .badge.RED    { background: var(--red); color: #fff; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin: 14px 0; }
+  .metric .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .metric .value { font-size: 15px; font-weight: 600; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12px; color: var(--muted); }
+  .bar-track { flex: 1; height: 6px; background: #202f3c; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; background: #4c8dff; }
+  details { margin-top: 10px; }
+  summary { cursor: pointer; font-size: 12px; color: var(--muted); }
+  ul.reasons { margin: 8px 0 0; padding-left: 18px; font-size: 12px; color: #c7d3dd; }
+  ul.reasons li { margin-bottom: 4px; }
+  #empty { color: var(--muted); padding: 40px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>VarshaNetra — Early Warning Dashboard</h1>
+    <p>Reference UI · consumes the Section 16 output schema · see dashboard/README.md for the data contract</p>
+  </div>
+  <div class="controls">
+    <select id="source">
+      <option value="sample">Static sample (outputs/sample_prediction.json)</option>
+      <option value="api">Live API (/predict/full)</option>
+    </select>
+    <input id="apiBase" placeholder="API base, e.g. http://localhost:8000" value="http://localhost:8000" style="width:240px; display:none;">
+    <button id="loadBtn">Load</button>
+    <span id="status"></span>
+  </div>
+</header>
+
+<main>
+  <div id="grid" class="grid"></div>
+  <div id="empty" style="display:none;">No predictions loaded yet. Click "Load" above.</div>
+</main>
+
+<script>
+const sourceSel = document.getElementById('source');
+const apiBaseInput = document.getElementById('apiBase');
+const statusEl = document.getElementById('status');
+const gridEl = document.getElementById('grid');
+const emptyEl = document.getElementById('empty');
+
+sourceSel.addEventListener('change', () => {
+  apiBaseInput.style.display = sourceSel.value === 'api' ? 'inline-block' : 'none';
+});
+
+document.getElementById('loadBtn').addEventListener('click', load);
+
+async function load() {
+  statusEl.textContent = 'Loading…';
+  try {
+    let predictions;
+    if (sourceSel.value === 'sample') {
+      const res = await fetch('../outputs/sample_prediction.json');
+      if (!res.ok) throw new Error(`sample fetch failed: ${res.status}`);
+      const data = await res.json();
+      // sample_prediction.json is a flat list; the live API wraps it in {predictions: [...]}
+      predictions = Array.isArray(data) ? data : data.predictions;
+    } else {
+      const base = apiBaseInput.value.replace(/\/$/, '');
+      const res = await fetch(`${base}/predict/full`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ records: [], rainfall_lead_hours: 3, flood_lead_hours: 6, explain: true }),
+      });
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      const data = await res.json();
+      predictions = data.predictions;
+    }
+    render(predictions || []);
+    statusEl.textContent = `Loaded ${predictions ? predictions.length : 0} prediction(s) — ${new Date().toLocaleTimeString()}`;
+  } catch (err) {
+    statusEl.textContent = `Error: ${err.message}`;
+    render([]);
+  }
+}
+
+function render(predictions) {
+  gridEl.innerHTML = '';
+  emptyEl.style.display = predictions.length ? 'none' : 'block';
+  for (const p of predictions) {
+    gridEl.appendChild(renderCard(p));
+  }
+}
+
+function pct(x) { return `${Math.round((x || 0) * 100)}%`; }
+
+function renderCard(p) {
+  const level = p.warning_level || 'GREEN';
+  const card = document.createElement('div');
+  card.className = `card ${level}`;
+
+  const reasons = (p.top_contributing_features || [])
+    .map(r => `<li>${escapeHtml(r)}</li>`).join('') || '<li>No attribution available for this prediction.</li>';
+
+  card.innerHTML = `
+    <div class="card-top">
+      <div>
+        <h3>${escapeHtml(p.location || 'Unknown location')}</h3>
+        <div class="time">${escapeHtml(p.forecast_time || '')}</div>
+      </div>
+      <span class="badge ${level}">${level}</span>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="label">Rainfall</div>
+        <div class="value">${(p.rainfall_mm ?? 0).toFixed(1)} mm — ${escapeHtml(p.rainfall_category || 'n/a')}</div>
+      </div>
+      <div class="metric">
+        <div class="label">Heavy-rain probability</div>
+        <div class="value">${pct(p.heavy_rain_probability)}</div>
+      </div>
+      <div class="metric">
+        <div class="label">Flood probability</div>
+        <div class="value">${pct(p.flood_probability)}</div>
+      </div>
+      <div class="metric">
+        <div class="label">Inundation depth</div>
+        <div class="value">${(p.inundation_depth_m ?? 0).toFixed(2)} m</div>
+      </div>
+    </div>
+
+    <div class="bar-row">
+      <span>Confidence</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct(p.confidence)}"></div></div>
+      <span>${pct(p.confidence)}</span>
+    </div>
+
+    <details>
+      <summary>Why this warning? (${(p.top_contributing_features || []).length} contributing factors)</summary>
+      <ul class="reasons">${reasons}</ul>
+    </details>
+  `;
+  return card;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// auto-load the static sample on first open, since that always works
+// without any backend running.
+load();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+# === Core ===
+numpy>=1.26
+pandas>=2.2
+scipy>=1.12
+pyyaml>=6.0
+scikit-learn>=1.4
+
+# === Deep learning ===
+torch>=2.2
+torchvision>=0.17
+
+# === Geospatial / earth-science I/O ===
+xarray>=2024.2
+rasterio>=1.3
+geopandas>=0.14
+zarr>=2.17
+netCDF4>=1.6
+wradlib>=2.0          # radar processing utilities
+
+# === Serving ===
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+
+# === Explainability ===
+shap>=0.45
+grad-cam>=1.5.0
+
+# === Experiment tooling ===
+tqdm>=4.66
+matplotlib>=3.8
+tensorboard>=2.16
+
+# === Testing ===
+pytest>=8.0

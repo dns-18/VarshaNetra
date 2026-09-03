@@ -1,0 +1,38 @@
+# ===== Python (backend/) =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.pkl.tmp
+backend/data_samples/raw/*.pkl
+backend/data_samples/raw/*.parquet
+
+# Keep trained checkpoints and demo outputs — they're small (~6MB) and are
+# what makes `git clone && run` actually work without retraining first.
+# If checkpoints grow large later, switch these to Git LFS instead of
+# ignoring them outright.
+!backend/checkpoints/*.pkl
+!backend/outputs/*
+
+# ===== Node / Vite (frontend/) =====
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# Environment variables — never commit real .env files, only .env.example
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+!frontend/.env.example
+
+# ===== Editors / OS =====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.swp

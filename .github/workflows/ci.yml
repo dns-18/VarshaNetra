@@ -1,0 +1,52 @@
+name: CI
+
+# NOTE: this workflow has not been run anywhere yet — it was authored in a
+# sandbox with no internet access, so it could never execute here. It WILL
+# run for real once pushed to GitHub (GitHub Actions runners have internet).
+# Expect to need a fix-up commit or two the first time it runs — treat the
+# first few runs as the actual test of this file, not this comment.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-smoke-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Minimal install for the MVP path (numpy/pandas/scikit-learn
+      # baselines) rather than the full requirements.txt, which also lists
+      # torch/rasterio/wradlib/shap for the full spec — those need extra
+      # system setup (GDAL, etc.) that isn't worth the CI time for a smoke
+      # test. Full-dependency installs are exercised manually, not in CI.
+      - name: Install minimal deps
+        run: pip install numpy pandas scipy scikit-learn pyyaml
+      - name: Syntax-check every module
+        run: find src -name "*.py" | xargs -I{} python -m py_compile {}
+      - name: Run the MVP end-to-end (data gen -> features -> ablation -> training -> inference)
+        run: PYTHONPATH=src python3 run_mvp.py
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build

@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * VARSHANETRA Design System
+ * Dark command-center interface
+ */
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  @apply border-surface-border;
+}
+
+html {
+  @apply bg-surface-base text-text-primary;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply font-sans text-base leading-normal;
+  letter-spacing: 0.18px;
+  margin: 0;
+}
+
+/* Typography */
+h1 {
+  @apply text-4xl font-bold leading-tight text-text-primary;
+}
+
+h2 {
+  @apply text-3xl font-semibold leading-tight text-text-primary;
+}
+
+h3 {
+  @apply text-2xl font-semibold leading-normal text-text-primary;
+}
+
+h4 {
+  @apply text-xl font-semibold leading-normal text-text-primary;
+}
+
+p {
+  @apply text-base font-normal leading-normal text-text-secondary;
+  margin: 0;
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-status-info outline-offset-2;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  html {
+    @apply text-sm;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+}
+
+/* Utility classes for design system */
+.command-panel {
+  @apply bg-surface-elevated border border-surface-border rounded-lg shadow-md;
+}
+
+.risk-badge {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-md font-medium text-sm;
+}
+
+.risk-low {
+  @apply bg-risk-low/10 text-risk-low;
+}
+
+.risk-moderate {
+  @apply bg-risk-moderate/10 text-risk-moderate;
+}
+
+.risk-high {
+  @apply bg-risk-high/10 text-risk-high;
+}
+
+.risk-critical {
+  @apply bg-risk-critical/10 text-risk-critical;
+}

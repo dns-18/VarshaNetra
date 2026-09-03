@@ -1,0 +1,102 @@
+[
+  {
+    "location": "IND_10.61_68.00",
+    "forecast_time": "2023-06-29 20:00:00",
+    "rainfall_mm": 2.48,
+    "rainfall_category": "No Rain",
+    "heavy_rain_probability": 0.001,
+    "flood_probability": 0.0,
+    "inundation_depth_m": 0.0,
+    "confidence": 0.997,
+    "uncertainty": 0.003,
+    "thermo_wind_signal": -0.0,
+    "warning_level": "GREEN",
+    "top_contributing_features": [
+      "cloud_top_temp decreased the prediction (contribution=-0.190)",
+      "ir1_bt_mean_3h decreased the prediction (contribution=-0.144)",
+      "relative_humidity_pct increased the prediction (contribution=0.034)",
+      "ir2_brightness_temp decreased the prediction (contribution=-0.029)",
+      "v_wind_925hpa decreased the prediction (contribution=0.000)"
+    ]
+  },
+  {
+    "location": "IND_10.61_68.00",
+    "forecast_time": "2023-06-29 21:00:00",
+    "rainfall_mm": 1.99,
+    "rainfall_category": "No Rain",
+    "heavy_rain_probability": 0.001,
+    "flood_probability": 0.0,
+    "inundation_depth_m": 0.0,
+    "confidence": 0.997,
+    "uncertainty": 0.003,
+    "thermo_wind_signal": 0.0,
+    "warning_level": "GREEN",
+    "top_contributing_features": [
+      "cape_j_kg increased the prediction (contribution=0.131)",
+      "cloud_top_temp decreased the prediction (contribution=-0.095)",
+      "ir1_brightness_temp decreased the prediction (contribution=-0.035)",
+      "ir1_bt_mean_3h decreased the prediction (contribution=-0.029)",
+      "ir2_brightness_temp decreased the prediction (contribution=-0.029)"
+    ]
+  },
+  {
+    "location": "IND_10.61_68.00",
+    "forecast_time": "2023-06-29 22:00:00",
+    "rainfall_mm": 2.02,
+    "rainfall_category": "No Rain",
+    "heavy_rain_probability": 0.001,
+    "flood_probability": 0.0,
+    "inundation_depth_m": 0.0,
+    "confidence": 0.997,
+    "uncertainty": 0.003,
+    "thermo_wind_signal": 0.0,
+    "warning_level": "GREEN",
+    "top_contributing_features": [
+      "cape_j_kg increased the prediction (contribution=0.131)",
+      "cloud_top_temp decreased the prediction (contribution=-0.095)",
+      "relative_humidity_pct increased the prediction (contribution=0.063)",
+      "ir1_brightness_temp decreased the prediction (contribution=-0.035)",
+      "ir1_bt_mean_3h decreased the prediction (contribution=-0.029)"
+    ]
+  },
+  {
+    "location": "IND_10.61_68.00",
+    "forecast_time": "2023-06-29 23:00:00",
+    "rainfall_mm": 38.26,
+    "rainfall_category": "Moderate",
+    "heavy_rain_probability": 0.0,
+    "flood_probability": 0.0,
+    "inundation_depth_m": 0.603,
+    "confidence": 1.0,
+    "uncertainty": 0.0,
+    "thermo_wind_signal": 0.0,
+    "warning_level": "GREEN",
+    "top_contributing_features": [
+      "cin_j_kg decreased the prediction (contribution=-7.159)",
+      "ir1_brightness_temp decreased the prediction (contribution=-6.261)",
+      "thermal_gradient decreased the prediction (contribution=-4.517)",
+      "cloud_top_temp decreased the prediction (contribution=-4.001)",
+      "ir2_brightness_temp decreased the prediction (contribution=-2.407)"
+    ]
+  },
+  {
+    "location": "IND_10.61_68.00",
+    "forecast_time": "2023-06-30 00:00:00",
+    "rainfall_mm": 65.78,
+    "rainfall_category": "Heavy",
+    "heavy_rain_probability": 0.0,
+    "flood_probability": 0.004,
+    "inundation_depth_m": 0.865,
+    "confidence": 0.993,
+    "uncertainty": 0.007,
+    "thermo_wind_signal": 0.0,
+    "warning_level": "GREEN",
+    "top_contributing_features": [
+      "cin_j_kg decreased the prediction (contribution=-39.881)",
+      "cloud_top_temp decreased the prediction (contribution=-18.382)",
+      "ir1_brightness_temp decreased the prediction (contribution=-9.908)",
+      "ir1_bt_min_6h decreased the prediction (contribution=-7.581)",
+      "u_wind_925hpa decreased the prediction (contribution=0.000)"
+    ]
+  }
+]

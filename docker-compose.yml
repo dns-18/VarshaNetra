@@ -1,0 +1,30 @@
+# Not build/run-tested in the environment this was authored in (no Docker
+# daemon available there) — see root README.md "Honesty note".
+#
+# Usage:
+#   docker compose up --build
+# Backend:  http://localhost:8000
+# Frontend: http://localhost:5173
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - VARSHANETRA_ALLOWED_ORIGINS=http://localhost:5173
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
